@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ToteTrack">
+<meta name="theme-color" content="#1a1814">
+<title>ToteTrack</title>
+<script>
+const _mf={name:"ToteTrack",short_name:"ToteTrack",description:"Organize your storage totes",start_url:".",display:"standalone",background_color:"#f5f3ef",theme_color:"#1a1814",icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%231a1814'/%3E%3Ctext x='96' y='120' font-size='110' text-anchor='middle' font-family='serif'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E",sizes:"192x192",type:"image/svg+xml"},{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%231a1814'/%3E%3Ctext x='256' y='320' font-size='300' text-anchor='middle' font-family='serif'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E",sizes:"512x512",type:"image/svg+xml"}]};
+document.addEventListener('DOMContentLoaded',()=>{const b=new Blob([JSON.stringify(_mf)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);});
+</script>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231a1814'/%3E%3Ctext x='90' y='115' font-size='100' text-anchor='middle'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f5f3ef;--surface:#fff;--surface2:#f0ede7;--border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);--text:#1a1814;--text2:#6b6560;--text3:#9e9890;--amber:#d97706;--amber-bg:#fef3c7;--amber-text:#92400e;--radius:10px;--radius-sm:6px;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;overflow:hidden}
+body{font-family:Georgia,serif;background:var(--bg);color:var(--text);font-size:14px}
+.app{display:flex;flex-direction:column;height:100%;height:100dvh;overflow:hidden}
+.topbar{background:#1a1814;color:#fff;padding:0 16px;padding-top:var(--safe-top);display:flex;align-items:center;gap:10px;height:calc(56px + var(--safe-top));flex-shrink:0}
+.topbar-logo{font-size:17px;font-weight:700;display:flex;align-items:center;gap:7px;color:#fff;flex-shrink:0}
+.topbar-logo i{color:#fbbf24;font-size:20px}
+.topbar-search{flex:1;position:relative;min-width:0}
+.topbar-search input{width:100%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:7px 12px 7px 34px;color:#fff;font-size:13px;font-family:inherit;outline:none}
+.topbar-search input::placeholder{color:rgba(255,255,255,0.4)}
+.topbar-search .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:15px;color:rgba(255,255,255,0.4);pointer-events:none}
+.topbar-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.itb{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:8px;color:#fff;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.itb.aib{background:#1e1b4b;border-color:#3730a3}
+.main{display:flex;flex:1;overflow:hidden;min-height:0}
+.sidebar{width:210px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-section{padding:14px 10px 6px}
+.sidebar-label{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;padding-left:8px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:8px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);font-size:13px;transition:all 0.1s;-webkit-tap-highlight-color:transparent}
+.sidebar-item:hover{background:var(--surface2)}
+.sidebar-item.active{background:var(--amber-bg);color:var(--amber-text);font-weight:500}
+.sidebar-item i{font-size:16px;flex-shrink:0}
+.sidebar-item .badge{margin-left:auto;font-size:11px;background:var(--surface2);border-radius:10px;padding:1px 7px;color:var(--text2)}
+.sidebar-item.active .badge{background:rgba(217,119,6,0.2);color:var(--amber-text)}
+.tote-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sdiv{border:none;border-top:1px solid var(--border);margin:6px 10px}
+.content{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;-webkit-overflow-scrolling:touch}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.pt{font-size:20px;font-weight:700}
+.ps{font-size:12px;color:var(--text2);margin-top:2px}
+.stats-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.stat-label{font-size:11px;color:var(--text2);margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700}
+.stat-icon{float:right;font-size:20px;color:var(--text3)}
+.totes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.tote-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.18s;-webkit-tap-highlight-color:transparent}
+.tote-card:active{transform:scale(0.98)}
+.tote-header{padding:14px 16px 10px;border-bottom:3px solid}
+.tote-name{font-size:15px;font-weight:700}
+.tote-loc{font-size:11px;opacity:.7;margin-top:3px;display:flex;align-items:center;gap:3px}
+.tote-body{padding:10px 14px 12px;min-height:54px}
+.tote-item-row{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px;padding:2px 0}
+.tote-more{font-size:12px;color:var(--text3);margin-top:3px}
+.tote-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--surface2);border-top:1px solid var(--border)}
+.tote-count{font-size:12px;font-weight:600;color:var(--text2)}
+.tote-actions{display:flex;gap:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid transparent;cursor:pointer;font-size:13px;font-family:inherit;font-weight:500;transition:all 0.15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.btn-primary{background:#fbbf24;border-color:#f59e0b;color:#1a1814}
+.btn-primary:active{background:#f59e0b}
+.btn-outline{background:transparent;border-color:var(--border2);color:var(--text)}
+.btn-outline:active{background:var(--surface2)}
+.btn-danger{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn i{font-size:15px}
+.icon-btn{background:none;border:none;cursor:pointer;padding:6px;border-radius:6px;color:var(--text3);display:inline-flex;align-items:center;font-size:18px;-webkit-tap-highlight-color:transparent;min-width:36px;min-height:36px;justify-content:center}
+.icon-btn:active{background:var(--surface2);color:var(--text)}
+.icon-btn.danger:active{background:#fee2e2;color:#dc2626}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
+.item-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.item-img{width:100%;height:110px;object-fit:cover;display:block}
+.item-img-ph{width:100%;height:110px;background:var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:28px}
+.item-body{padding:9px 11px 11px}
+.item-name{font-size:13px;font-weight:600}
+.item-desc{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4;max-height:32px;overflow:hidden}
+.item-qty{display:inline-block;font-size:11px;font-weight:600;background:var(--surface2);border-radius:20px;padding:2px 7px;margin-top:5px;color:var(--text2)}
+.item-actions{display:flex;gap:2px;margin-top:6px;justify-content:flex-end}
+.detail-back{display:inline-flex;align-items:center;gap:6px;color:var(--text2);cursor:pointer;font-size:13px;margin-bottom:14px;padding:4px 0;-webkit-tap-highlight-color:transparent}
+.dhc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;border-left:5px solid}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
+.sr{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;margin-bottom:9px;display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sr:active{background:var(--surface2)}
+.sr-photo{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--surface2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text3);overflow:hidden}
+.sr-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sr-info{flex:1;min-width:0}
+.sr-name{font-weight:600;font-size:13px}
+.sr-desc{font-size:11px;color:var(--text2);margin-top:1px}
+.sr-tt{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;margin-top:4px;padding:2px 7px;border-radius:20px}
+.hl{background:#fde68a;border-radius:2px;padding:0 1px;color:#92400e}
+.empty-state{text-align:center;padding:48px 20px;color:var(--text2)}
+.empty-state i{font-size:44px;color:var(--text3);margin-bottom:10px;display:block}
+.empty-state h3{font-size:16px;font-weight:600;margin-bottom:5px}
+.empty-state p{font-size:13px;color:var(--text3)}
+.key-banner{background:#fffbeb;border:1px solid #fcd34d;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:9px;font-size:12px;color:#92400e}
+.key-banner i{font-size:16px;flex-shrink:0}
+.key-banner a{color:var(--amber);text-decoration:underline;cursor:pointer}
+.bottom-nav{display:none;background:var(--surface);border-top:1px solid var(--border);padding-bottom:var(--safe-bottom);flex-shrink:0}
+.bnav{display:flex}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;cursor:pointer;color:var(--text3);font-size:10px;font-weight:500;border:none;background:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.bni i{font-size:22px}
+.bni.active{color:var(--amber)}
+.bni.ai-nav.active{color:#7c3aed}
+.ai-panel{background:var(--surface);display:flex;flex-direction:column;overflow:hidden;transition:width 0.25s ease}
+.ai-panel.hidden{width:0}
+.ai-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;background:#1e1b4b}
+.ai-title{font-size:14px;font-weight:700;color:#fff;flex:1;display:flex;align-items:center;gap:7px}
+.ai-title i{color:#a78bfa;font-size:17px}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;flex-shrink:0}
+.ai-dot.off{background:#94a3b8}
+.ai-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.ai-msg{display:flex;flex-direction:column;gap:3px;max-width:92%}
+.ai-msg.user{align-self:flex-end;align-items:flex-end}
+.ai-msg.bot{align-self:flex-start;align-items:flex-start}
+.ai-bubble{padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.6}
+.ai-msg.user .ai-bubble{background:#1e1b4b;color:#fff;border-bottom-right-radius:4px}
+.ai-msg.bot .ai-bubble{background:var(--surface2);color:var(--text);border-bottom-left-radius:4px;border:1px solid var(--border)}
+.ai-bubble strong{font-weight:600}
+.ai-label{font-size:10px;color:var(--text3);padding:0 3px}
+.ai-typing{display:flex;align-items:center;gap:4px;padding:9px 12px}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:bounce 1.2s infinite ease-in-out}
+.ai-typing span:nth-child(2){animation-delay:.2s}
+.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.ai-chips{padding:8px 12px;display:flex;flex-wrap:wrap;gap:5px;flex-shrink:0;border-top:1px solid var(--border)}
+.ai-chip{background:#ede9fe;border:1px solid #c4b5fd;color:#5b21b6;font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ai-chip:active{background:#ddd6fe}
+.ai-no-key{padding:20px 14px;text-align:center;color:var(--text2);font-size:13px}
+.ai-no-key i{font-size:28px;color:var(--text3);display:block;margin-bottom:8px}
+.ai-ir{padding:10px 12px;padding-bottom:max(10px,var(--safe-bottom));border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.ai-input{flex:1;border:1px solid var(--border2);border-radius:20px;padding:8px 13px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;resize:none;overflow-y:auto;max-height:80px;line-height:1.4}
+.ai-input:focus{border-color:#7c3aed}
+.ai-send{background:#1e1b4b;border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.ai-send:active{background:#312e81}
+.ai-send:disabled{opacity:.4}
+.ai-send i{font-size:16px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;width:100%;max-width:600px;max-height:94dvh;overflow-y:auto;padding-bottom:var(--safe-bottom)}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:10px auto 0}
+.modal-header{padding:14px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:17px;font-weight:700}
+.modal-body{padding:16px 20px 6px}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:12px 20px 16px}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.form-hint{font-size:11px;color:var(--text3);margin-top:4px}
+.form-control{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:16px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;-webkit-appearance:none}
+.form-control:focus{border-color:var(--amber)}
+textarea.form-control{resize:none;min-height:72px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.color-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.color-opt{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;-webkit-tap-highlight-color:transparent}
+.color-opt.sel{border-color:var(--text);box-shadow:0 0 0 2px #fff inset}
+.photo-drop{border:2px dashed var(--border2);border-radius:var(--radius-sm);padding:22px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
+.photo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.photo-drop i{font-size:28px;color:var(--text3);display:block;margin-bottom:5px}
+.photo-drop p{font-size:13px;color:var(--text2)}
+.photo-preview-img{width:100%;height:160px;object-fit:cover;border-radius:var(--radius-sm);margin-top:10px;display:none}
+.fab{display:none;position:fixed;bottom:calc(68px + var(--safe-bottom));right:18px;width:56px;height:56px;background:#fbbf24;border:none;border-radius:50%;box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;align-items:center;justify-content:center;font-size:26px;color:#1a1814;z-index:100;-webkit-tap-highlight-color:transparent}
+.fab:active{transform:scale(0.93)}
+.install-banner{background:#1e1b4b;color:#fff;padding:10px 14px;display:none;align-items:center;gap:10px;font-size:13px;flex-shrink:0}
+.install-banner button{background:#fbbf24;border:none;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;color:#1a1814;cursor:pointer;white-space:nowrap}
+.install-banner .xb{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:18px;margin-left:auto;padding:2px}
+@media(min-width:769px){
+  .content{padding:24px}
+  .stats-row{grid-template-columns:repeat(4,1fr)}
+  .bottom-nav{display:none!important}
+  .fab{display:none!important}
+  .ai-panel{width:320px;border-left:1px solid var(--border)}
+  .ai-panel.hidden{width:0}
+  .modal-backdrop{align-items:center;padding:20px}
+  .modal{border-radius:var(--radius);max-height:92vh}
+  .modal-handle{display:none}
+  .topbar{padding:0 20px;height:56px}
+}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .bottom-nav{display:block}
+  .fab{display:flex}
+  .donly{display:none!important}
+  .ai-panel{position:fixed;inset:0;z-index:200;width:100%!important}
+  .ai-panel.hidden{display:none}
+  .items-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr))}
+  .totes-grid{grid-template-columns:1fr}
+  .dhc{flex-direction:column;gap:12px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="install-banner" id="installBanner">
+  <i class="ti ti-device-mobile" style="font-size:20px;color:#a78bfa;flex-shrink:0"></i>
+  <span>Install ToteTrack on your home screen!</span>
+  <button onclick="installApp()">Install</button>
+  <button class="xb" onclick="dismissInstall()"><i class="ti ti-x"></i></button>
+</div>
+<div class="topbar">
+  <div class="topbar-logo"><i class="ti ti-box-seam"></i> ToteTrack</div>
+  <div class="topbar-search">
+    <i class="ti ti-search si"></i>
+    <input type="text" id="globalSearch" placeholder="Search..." oninput="onSearchInput(this.value)" autocomplete="off">
+  </div>
+  <div class="topbar-actions">
+    <button class="itb donly" onclick="openToteModal()" title="New Tote"><i class="ti ti-plus"></i></button>
+    <button class="itb aib" onclick="toggleAI()" title="AI"><i class="ti ti-sparkles"></i></button>
+    <button class="itb donly" onclick="openSettings()" title="Settings"><i class="ti ti-settings"></i></button>
+  </div>
+</div>
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Views</div>
+      <div class="sidebar-item active" id="navAll" onclick="navigate('all')"><i class="ti ti-layout-grid"></i> All Totes <span class="badge" id="toteBadge">0</span></div>
+      <div class="sidebar-item" id="navSearch" onclick="navigate('search')"><i class="ti ti-search"></i> Search</div>
+    </div>
+    <hr class="sdiv">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Totes</div>
+      <div id="sidebarTotes"></div>
+    </div>
+    <div style="margin-top:auto;padding:12px 10px">
+      <button class="btn btn-outline btn-sm" style="width:100%" onclick="openToteModal()"><i class="ti ti-plus"></i> New Tote</button>
+      <button class="btn btn-outline btn-sm" style="width:100%;margin-top:8px" onclick="openSettings()"><i class="ti ti-settings"></i> Settings</button>
+    </div>
+  </div>
+  <div class="content" id="mainContent"></div>
+  <div class="ai-panel hidden" id="aiPanel">
+    <div class="ai-header">
+      <div class="ai-title"><i class="ti ti-robot"></i> Storage AI</div>
+      <div class="ai-dot" id="aiStatus"></div>
+      <button class="icon-btn" style="color:rgba(255,255,255,0.6);min-width:32px;min-height:32px" onclick="toggleAI()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="ai-msgs" id="aiMsgs">
+      <div class="ai-msg bot"><div class="ai-bubble">Hi! I know all your totes and items. Ask me:<br><br>&#x2022; "Where are my Christmas lights?"<br>&#x2022; "What's in the garage tote?"<br>&#x2022; "Help me organize better"</div><div class="ai-label">Storage AI</div></div>
+    </div>
+    <div class="ai-chips">
+      <div class="ai-chip" onclick="aiAsk('Give me a full overview of my storage')">📦 Overview</div>
+      <div class="ai-chip" onclick="aiAsk('Which tote has the most items?')">📊 Most items</div>
+      <div class="ai-chip" onclick="aiAsk('Suggest how I could organize better')">💡 Tips</div>
+      <div class="ai-chip" onclick="aiAsk('What items have quantity more than 1?')">🔢 Multiples</div>
+      <div class="ai-chip" onclick="aiAsk('What items are missing photos?')">📷 No photos</div>
+    </div>
+    <div id="aiNoKey" style="display:none" class="ai-no-key"><i class="ti ti-key"></i><div>Add your Anthropic API key in Settings to enable AI.</div><button class="btn btn-sm btn-outline" style="margin-top:10px" onclick="openSettings()"><i class="ti ti-settings"></i> Settings</button></div>
+    <div class="ai-ir" id="aiInputRow">
+      <textarea class="ai-input" id="aiInput" placeholder="Ask about your storage..." rows="1" onkeydown="aiKeydown(event)" oninput="aiResize(this)"></textarea>
+      <button class="ai-send" id="aiSendBtn" onclick="aiSend()"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+</div>
+<nav class="bottom-nav">
+  <div class="bnav">
+    <button class="bni active" id="bn_all" onclick="navigate('all')"><i class="ti ti-layout-grid"></i>Home</button>
+    <button class="bni" id="bn_search" onclick="navigate('search')"><i class="ti ti-search"></i>Search</button>
+    <button class="bni" id="bn_totes" onclick="showTotesList()"><i class="ti ti-box-seam"></i>Totes</button>
+    <button class="bni ai-nav" id="bn_ai" onclick="toggleAI()"><i class="ti ti-sparkles"></i>AI</button>
+    <button class="bni" onclick="openSettings()"><i class="ti ti-settings"></i>Settings</button>
+  </div>
+</nav>
+<button class="fab" onclick="openItemModal()" aria-label="Add item"><i class="ti ti-plus"></i></button>
+</div>
+<div id="modals"></div>
+<script>
+const COLORS=[{id:'amber',hex:'#d97706',bg:'#fef3c7',text:'#92400e'},{id:'blue',hex:'#2563eb',bg:'#dbeafe',text:'#1e3a8a'},{id:'teal',hex:'#0d9488',bg:'#ccfbf1',text:'#134e4a'},{id:'green',hex:'#16a34a',bg:'#dcfce7',text:'#14532d'},{id:'red',hex:'#dc2626',bg:'#fee2e2',text:'#7f1d1d'},{id:'purple',hex:'#7c3aed',bg:'#ede9fe',text:'#3b0764'},{id:'pink',hex:'#db2777',bg:'#fce7f3',text:'#831843'},{id:'gray',hex:'#475569',bg:'#f1f5f9',text:'#1e293b'}];
+let S={totes:[],items:[],view:'all',toteId:null,q:''};
+let aiHistory=[],aiLoading=false,pendingPhoto=null;
+function persist(){try{localStorage.setItem('tt_totes',JSON.stringify(S.totes));localStorage.setItem('tt_items',JSON.stringify(S.items));}catch(e){}}
+function loadData(){try{S.totes=JSON.parse(localStorage.getItem('tt_totes')||'[]');}catch(e){S.totes=[];}try{S.items=JSON.parse(localStorage.getItem('tt_items')||'[]');}catch(e){S.items=[];}try{aiHistory=JSON.parse(localStorage.getItem('tt_ai')||'[]');}catch(e){aiHistory=[];}}
+function saveAI(){try{localStorage.setItem('tt_ai',JSON.stringify(aiHistory.slice(-40)));}catch(e){}}
+function getKey(){return localStorage.getItem('tt_key')||'';}
+function setKey(k){localStorage.setItem('tt_key',k);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function col(id){return COLORS.find(c=>c.id===id)||COLORS[0];}
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function md2html(t){return esc(t).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');}
+function hi(s,q){if(!s||!q)return esc(s);const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');return esc(s).replace(re,'<mark class="hl">$1</mark>');}
+function navigate(view,toteId){S.view=view;S.toteId=toteId||null;if(view!=='search'){S.q='';document.getElementById('globalSearch').value='';}updateNav();renderContent();}
+function updateNav(){
+  document.querySelectorAll('.sidebar-item,.bni').forEach(el=>el.classList.remove('active'));
+  if(S.view==='all'){const a=document.getElementById('navAll');if(a)a.classList.add('active');const b=document.getElementById('bn_all');if(b)b.classList.add('active');}
+  else if(S.view==='search'){const a=document.getElementById('navSearch');if(a)a.classList.add('active');const b=document.getElementById('bn_search');if(b)b.classList.add('active');}
+  else if(S.view==='tote'&&S.toteId){const a=document.getElementById('st_'+S.toteId);if(a)a.classList.add('active');const b=document.getElementById('bn_totes');if(b)b.classList.add('active');}
+}
+function onSearchInput(val){S.q=val.trim();S.view=val?'search':'all';updateNav();renderContent();}
+function showTotesList(){
+  if(!S.totes.length){openToteModal();return;}
+  modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">Your Totes</div><button class="icon-btn" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body" style="padding-bottom:20px">'+
+    S.totes.map(t=>{const c=col(t.color);const cnt=S.items.filter(i=>i.toteId===t.id).length;return'<div onclick="closeModal();navigate(\'tote\',\''+t.id+'\')" style="display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--border);cursor:pointer"><span class="tote-dot" style="background:'+c.hex+';width:14px;height:14px"></span><div style="flex:1"><div style="font-weight:600;font-size:14px">'+esc(t.name)+'</div>'+(t.location?'<div style="font-size:11px;color:var(--text2)">'+esc(t.location)+'</div>':'')+'</div><span style="font-size:12px;color:var(--text2)">'+cnt+' items</span><i class="ti ti-chevron-right" style="color:var(--text3)"></i></div>';}).join('')+
+    '<div style="padding-top:14px"><button class="btn btn-primary" style="width:100%" onclick="closeModal();openToteModal()"><i class="ti ti-plus"></i> New Tote</button></div></div>');
+}
+function render(){renderSidebar();renderContent();updateNav();updateAIStatus();}
+function renderSidebar(){
+  const b=document.getElementById('toteBadge');if(b)b.textContent=S.totes.length;
+  const el=document.getElementById('sidebarTotes');if(!el)return;
+  if(!S.totes.length){el.innerHTML='<div style="padding:6px 8px;font-size:12px;color:var(--text3)">No totes yet</div>';return;}
+  el.innerHTML=S.totes.map(t=>{const c=col(t.color);const cnt=S.items.filter(i=>i.toteId===t.id).length;const active=S.view==='tote'&&S.toteId===t.id;return'<div class="sidebar-item'+(active?' active':'')+'" id="st_'+t.id+'" onclick="navigate(\'tote\',\''+t.id+'\')"><span class="tote-dot" style="background:'+c.hex+'"></span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(t.name)+'</span><span class="badge">'+cnt+'</span></div>';}).join('');
+}
+function renderContent(){const el=document.getElementById('mainContent');if(S.view==='all')el.innerHTML=pageAll();else if(S.view==='search')el.innerHTML=pageSearch();else if(S.view==='tote')el.innerHTML=pageTote();el.scrollTop=0;}
+function pageAll(){
+  const tt=S.totes.length,ti=S.items.length,tq=S.items.reduce((s,i)=>s+(parseInt(i.qty)||1),0),tp=S.items.filter(i=>i.photo).length;
+  const banner=!getKey()?'<div class="key-banner"><i class="ti ti-info-circle"></i>Add your <a onclick="openSettings()">API key</a> for AI assistant.</div>':'';
+  const grid=!tt?'<div class="empty-state"><i class="ti ti-box-seam"></i><h3>No totes yet</h3><p>Tap + to create your first storage bin</p></div>':'<div class="totes-grid">'+S.totes.map(toteCard).join('')+'</div>';
+  return banner+'<div class="ph"><div><div class="pt">My Storage</div><div class="ps">'+tt+' tote'+(tt!==1?'s':'')+' &middot; '+ti+' item'+(ti!==1?'s':'')+'</div></div><button class="btn btn-outline btn-sm donly" onclick="openToteModal()"><i class="ti ti-plus"></i> New Tote</button></div><div class="stats-row"><div class="stat-card"><i class="ti ti-box-seam stat-icon"></i><div class="stat-label">Totes</div><div class="stat-value">'+tt+'</div></div><div class="stat-card"><i class="ti ti-tag stat-icon"></i><div class="stat-label">Items</div><div class="stat-value">'+ti+'</div></div><div class="stat-card"><i class="ti ti-stack stat-icon"></i><div class="stat-label">Total Qty</div><div class="stat-value">'+tq+'</div></div><div class="stat-card"><i class="ti ti-camera stat-icon"></i><div class="stat-label">Photos</div><div class="stat-value">'+tp+'</div></div></div>'+grid;
+}
+function toteCard(t){const c=col(t.color);const items=S.items.filter(i=>i.toteId===t.id);const preview=items.slice(0,3);return'<div class="tote-card" onclick="navigate(\'tote\',\''+t.id+'\')"><div class="tote-header" style="background:'+c.bg+';border-color:'+c.hex+'"><div class="tote-name" style="color:'+c.text+'">'+esc(t.name)+'</div>'+(t.location?'<div class="tote-loc" style="color:'+c.text+'"><i class="ti ti-map-pin" style="font-size:11px"></i>'+esc(t.location)+'</div>':'')+'</div><div class="tote-body">'+(!preview.length?'<div style="font-size:12px;color:var(--text3);font-style:italic">Empty tote</div>':preview.map(it=>'<div class="tote-item-row"><i class="ti ti-chevron-right" style="font-size:12px"></i><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(it.name)+((it.qty||1)>1?' <span style="color:var(--text3)">&times;'+it.qty+'</span>':'')+'</span></div>').join(''))+(items.length>3?'<div class="tote-more">+'+( items.length-3)+' more&hellip;</div>':'')+'</div><div class="tote-footer"><span class="tote-count">'+items.length+' item'+(items.length!==1?'s':'')+'</span><div class="tote-actions" onclick="event.stopPropagation()"><button class="icon-btn" onclick="openItemModal(\''+t.id+'\')" title="Add"><i class="ti ti-plus"></i></button><button class="icon-btn" onclick="openToteModal(\''+t.id+'\')" title="Edit"><i class="ti ti-edit"></i></button><button class="icon-btn danger" onclick="confirmDeleteTote(\''+t.id+'\')" title="Delete"><i class="ti ti-trash"></i></button></div></div></div>';}
+function pageTote(){
+  const tote=S.totes.find(t=>t.id===S.toteId);if(!tote)return'<div class="empty-state"><i class="ti ti-alert-circle"></i><h3>Not found</h3></div>';
+  const c=col(tote.color);const items=S.items.filter(i=>i.toteId===tote.id);
+  return'<div class="detail-back" onclick="navigate(\'all\')"><i class="ti ti-arrow-left"></i> All Totes</div><div class="dhc" style="border-color:'+c.hex+'"><div><div style="font-size:20px;font-weight:700;color:'+c.text+'">'+esc(tote.name)+'</div>'+(tote.location?'<div style="font-size:12px;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:3px"><i class="ti ti-map-pin"></i>'+esc(tote.location)+'</div>':'')+(tote.notes?'<div style="font-size:12px;color:var(--text2);margin-top:5px">'+esc(tote.notes)+'</div>':'')+'<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><span class="tag" style="background:'+c.bg+';color:'+c.text+'">'+items.length+' items</span></div></div><div style="display:flex;gap:6px;flex-wrap:wrap">'+(getKey()?'<button class="btn btn-sm btn-outline" onclick="aiAsk(\'Tell me about the '+esc(tote.name)+' tote and everything in it\');showAI()"><i class="ti ti-sparkles"></i> AI</button>':'')+'<button class="btn btn-sm btn-outline" onclick="openToteModal(\''+tote.id+'\')"><i class="ti ti-edit"></i> Edit</button><button class="btn btn-sm btn-primary" onclick="openItemModal(\''+tote.id+'\')"><i class="ti ti-plus"></i> Add</button></div></div>'+(!items.length?'<div class="empty-state"><i class="ti ti-package"></i><h3>Empty tote</h3><p>Tap "Add" to start filling it</p></div>':'<div class="items-grid">'+items.map(it=>itemCard(it)).join('')+'</div>');
+}
+function itemCard(it){return'<div class="item-card">'+(it.photo?'<img src="'+it.photo+'" class="item-img" loading="lazy">':'<div class="item-img-ph"><i class="ti ti-photo"></i></div>')+'<div class="item-body"><div class="item-name">'+esc(it.name)+'</div>'+(it.desc?'<div class="item-desc">'+esc(it.desc)+'</div>':'')+'<div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px">'+((it.qty||1)>1?'<span class="item-qty">&times;'+it.qty+'</span>':'<span></span>')+'<div class="item-actions"><button class="icon-btn" style="font-size:16px" onclick="openItemModal(\''+it.toteId+'\',\''+it.id+'\')"><i class="ti ti-edit"></i></button><button class="icon-btn danger" style="font-size:16px" onclick="confirmDeleteItem(\''+it.id+'\')"><i class="ti ti-trash"></i></button></div></div></div></div>';}
+function pageSearch(){
+  const q=S.q.toLowerCase();if(!q)return'<div class="ph"><div class="pt">Search</div></div><div class="empty-state"><i class="ti ti-search"></i><h3>Start typing</h3><p>Search items, totes, locations</p></div>';
+  const results=[];S.items.forEach(it=>{const tote=S.totes.find(t=>t.id===it.toteId);const s=(it.name.toLowerCase().includes(q)?3:0)+((it.desc||'').toLowerCase().includes(q)?2:0)+((tote?.name||'').toLowerCase().includes(q)?1:0)+((tote?.location||'').toLowerCase().includes(q)?1:0);if(s>0)results.push({it,tote,s});});results.sort((a,b)=>b.s-a.s);
+  const rows=!results.length?'<div class="empty-state"><i class="ti ti-search-off"></i><h3>No results</h3><p>Try different keywords</p></div>':results.map(({it,tote})=>{const c=col(tote?.color||'gray');return'<div class="sr" onclick="navigate(\'tote\',\''+it.toteId+'\')"><div class="sr-photo">'+(it.photo?'<img src="'+it.photo+'">':'<i class="ti ti-photo"></i>')+'</div><div class="sr-info"><div class="sr-name">'+hi(it.name,q)+'</div>'+(it.desc?'<div class="sr-desc">'+hi(it.desc,q)+'</div>':'')+(tote?'<div class="sr-tt" style="background:'+c.bg+';color:'+c.text+'"><i class="ti ti-box-seam" style="font-size:11px"></i>'+hi(tote.name,q)+(tote.location?' &middot; '+hi(tote.location,q):'')+'</div>':'')+'</div>'+((it.qty||1)>1?'<span class="item-qty">&times;'+it.qty+'</span>':'')+'<i class="ti ti-chevron-right" style="color:var(--text3)"></i></div>';}).join('');
+  return'<div class="ph"><div><div class="pt">Results</div><div class="ps">'+results.length+' for "'+esc(S.q)+'"</div></div>'+(getKey()?'<button class="btn btn-sm btn-outline" onclick="aiAsk(\'Find items related to '+esc(S.q)+'\');showAI()"><i class="ti ti-sparkles"></i> AI</button>':'')+'</div>'+rows;
+}
+function openToteModal(toteId){
+  const tote=toteId?S.totes.find(t=>t.id===toteId):null;const curColor=tote?.color||'amber';
+  modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">'+(tote?'Edit':'New')+' Tote</div><button class="icon-btn" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="form-group"><label class="form-label">Name *</label><input id="f_name" class="form-control" type="text" placeholder="e.g. Holiday Decorations" value="'+(tote?esc(tote.name):'')+'"></div><div class="form-group"><label class="form-label">Location</label><input id="f_loc" class="form-control" type="text" placeholder="e.g. Garage shelf 3, Attic" value="'+(tote?esc(tote.location||''):'')+'"></div><div class="form-group"><label class="form-label">Notes</label><textarea id="f_notes" class="form-control">'+(tote?esc(tote.notes||''):'')+'</textarea></div><div class="form-group"><label class="form-label">Color</label><div class="color-picker">'+COLORS.map(c=>'<div class="color-opt'+(c.id===curColor?' sel':'')+'" style="background:'+c.hex+'" data-col="'+c.id+'" onclick="pickColor(\''+c.id+'\')"></div>').join('')+'</div></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveTote(\''+(toteId||'')+'\')">'+( tote?'Save':'Create Tote')+'</button></div>');
+  setTimeout(()=>document.getElementById('f_name').focus(),100);
+}
+function pickColor(id){document.querySelectorAll('.color-opt').forEach(el=>el.classList.toggle('sel',el.dataset.col===id));}
+function saveTote(toteId){
+  const name=document.getElementById('f_name').value.trim();if(!name){document.getElementById('f_name').focus();return;}
+  const loc=document.getElementById('f_loc').value.trim(),notes=document.getElementById('f_notes').value.trim();
+  const sel=document.querySelector('.color-opt.sel');const color=sel?sel.dataset.col:'amber';
+  if(toteId){const t=S.totes.find(t=>t.id===toteId);if(t)Object.assign(t,{name,location:loc,notes,color});}
+  else S.totes.push({id:uid(),name,location:loc,notes,color,created:Date.now()});
+  persist();closeModal();render();
+}
+function openItemModal(toteId,itemId){
+  const item=itemId?S.items.find(i=>i.id===itemId):null;const defTote=toteId||S.toteId||(S.totes[0]?.id);
+  if(!defTote&&!item){openToteModal();return;}const curTote=item?item.toteId:defTote;pendingPhoto=null;
+  modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">'+(item?'Edit':'Add')+' Item</div><button class="icon-btn" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="form-group"><label class="form-label">Item name *</label><input id="if_name" class="form-control" type="text" placeholder="e.g. Extension cord" value="'+(item?esc(item.name):'')+'"></div><div class="form-row"><div class="form-group"><label class="form-label">Quantity</label><input id="if_qty" class="form-control" type="number" min="1" inputmode="numeric" value="'+(item?item.qty||1:1)+'"></div><div class="form-group"><label class="form-label">Tote</label><select id="if_tote" class="form-control">'+S.totes.map(t=>'<option value="'+t.id+'"'+(t.id===curTote?' selected':'')+'>'+esc(t.name)+'</option>').join('')+'</select></div></div><div class="form-group"><label class="form-label">Description</label><textarea id="if_desc" class="form-control" placeholder="Color, brand, size...">'+(item?esc(item.desc||''):'')+'</textarea></div><div class="form-group"><label class="form-label">Photo</label><div class="photo-drop"><input type="file" accept="image/*" capture="environment" onchange="handlePhoto(event)"><i class="ti ti-camera"></i><p>Tap to take photo or upload</p></div><img id="photoPreview" class="photo-preview-img" src="'+(item?.photo||'')+'" style="display:'+(item?.photo?'block':'none')+'">'+(item?.photo?'<button class="btn btn-sm btn-outline" style="margin-top:8px" onclick="clearPhoto()"><i class="ti ti-trash"></i> Remove</button>':'')+'</div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveItem(\''+(itemId||'')+'\')">'+( item?'Save':'Add Item')+'</button></div>');
+  setTimeout(()=>document.getElementById('if_name').focus(),100);
+}
+function handlePhoto(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');const MAX=700;let w=img.width,h=img.height;if(w>h&&w>MAX){h=Math.round(h*MAX/w);w=MAX;}else if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);pendingPhoto=canvas.toDataURL('image/jpeg',.78);const p=document.getElementById('photoPreview');if(p){p.src=pendingPhoto;p.style.display='block';}};img.src=ev.target.result;};reader.readAsDataURL(file);}
+function clearPhoto(){pendingPhoto='__clear__';const p=document.getElementById('photoPreview');if(p){p.style.display='none';p.src='';}}
+function saveItem(itemId){
+  const name=document.getElementById('if_name').value.trim();if(!name){document.getElementById('if_name').focus();return;}
+  const qty=parseInt(document.getElementById('if_qty').value)||1,toteId=document.getElementById('if_tote').value,desc=document.getElementById('if_desc').value.trim();
+  if(itemId){const it=S.items.find(i=>i.id===itemId);if(it){Object.assign(it,{name,qty,toteId,desc});if(pendingPhoto==='__clear__')it.photo=null;else if(pendingPhoto)it.photo=pendingPhoto;}}
+  else S.items.push({id:uid(),name,qty,toteId,desc,photo:pendingPhoto&&pendingPhoto!=='__clear__'?pendingPhoto:null,created:Date.now()});
+  pendingPhoto=null;persist();closeModal();S.view='tote';S.toteId=toteId;render();
+}
+function confirmDeleteTote(toteId){const tote=S.totes.find(t=>t.id===toteId);if(!tote)return;const cnt=S.items.filter(i=>i.toteId===toteId).length;modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">Delete tote?</div></div><div class="modal-body"><p style="color:var(--text2);line-height:1.6">Delete <strong>'+esc(tote.name)+'</strong>?'+(cnt?' Also removes <strong>'+cnt+' item'+(cnt!==1?'s':'')+'</strong>.':'')+' Cannot be undone.</p></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="deleteTote(\''+toteId+'\')"><i class="ti ti-trash"></i> Delete</button></div>');}
+function deleteTote(toteId){S.totes=S.totes.filter(t=>t.id!==toteId);S.items=S.items.filter(i=>i.toteId!==toteId);if(S.toteId===toteId){S.view='all';S.toteId=null;}persist();closeModal();render();}
+function confirmDeleteItem(itemId){const it=S.items.find(i=>i.id===itemId);if(!it)return;modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">Delete item?</div></div><div class="modal-body"><p style="color:var(--text2)">Remove <strong>'+esc(it.name)+'</strong>? Cannot be undone.</p></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="deleteItem(\''+itemId+'\')"><i class="ti ti-trash"></i> Delete</button></div>');}
+function deleteItem(itemId){S.items=S.items.filter(i=>i.id!==itemId);persist();closeModal();render();}
+function openSettings(){modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">Settings</div><button class="icon-btn" onclick="closeModal()"><i class="ti ti-x"></i></button></div><div class="modal-body"><div class="form-group"><label class="form-label">Anthropic API Key</label><input id="s_key" class="form-control" type="password" placeholder="sk-ant-..." value="'+getKey()+'" autocomplete="off"><div class="form-hint">Stored only on this device. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:var(--amber)">console.anthropic.com</a></div></div><div style="border-top:1px solid var(--border);padding-top:14px;margin-top:4px"><div class="form-label" style="margin-bottom:8px">Danger zone</div><button class="btn btn-danger btn-sm" onclick="confirmClear()"><i class="ti ti-trash"></i> Clear all data</button></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="saveSettings()">Save</button></div>');setTimeout(()=>document.getElementById('s_key').focus(),100);}
+function saveSettings(){setKey(document.getElementById('s_key').value.trim());closeModal();updateAIStatus();render();}
+function confirmClear(){modal('<div class="modal-handle"></div><div class="modal-header"><div class="modal-title">Clear all data?</div></div><div class="modal-body"><p style="color:var(--text2);line-height:1.6">Permanently deletes all totes, items, photos, and AI history. <strong>Cannot be undone.</strong></p></div><div class="modal-footer"><button class="btn btn-outline" onclick="openSettings()">Cancel</button><button class="btn btn-danger" onclick="clearAll()"><i class="ti ti-trash"></i> Clear Everything</button></div>');}
+function clearAll(){['tt_totes','tt_items','tt_ai'].forEach(k=>localStorage.removeItem(k));S={totes:[],items:[],view:'all',toteId:null,q:''};aiHistory=[];const msgs=document.getElementById('aiMsgs');if(msgs)msgs.innerHTML='';addBotMsg('All data cleared. Add a tote to start fresh!');closeModal();render();}
+function modal(inner){document.getElementById('modals').innerHTML='<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal">'+inner+'</div></div>';}
+function closeModal(){document.getElementById('modals').innerHTML='';}
+function buildPrompt(){
+  const info=S.totes.map(t=>{const items=S.items.filter(i=>i.toteId===t.id);return'Tote: "'+t.name+'" [color:'+t.color+'] [location:'+(t.location||'unset')+'] [notes:'+(t.notes||'none')+']\n  Items ('+items.length+'):\n'+( items.map(i=>'    - '+i.name+' qty:'+(i.qty||1)+(i.desc?' | '+i.desc:'')).join('\n')||'    (empty)');}).join('\n\n');
+  return'You are a helpful storage assistant for ToteTrack. You know the complete inventory.\n\nINVENTORY:\n'+(S.totes.length?info:'No totes yet.')+'\n\nTotal: '+S.totes.length+' totes, '+S.items.length+' items, '+S.items.reduce((s,i)=>s+(parseInt(i.qty)||1),0)+' total qty.\n\nAnswer questions about where items are, what is in each tote, and organization tips. Be concise and specific. Use bullet points. Under 200 words unless essential.';
+}
+function updateAIStatus(){
+  const hasKey=!!getKey();const dot=document.getElementById('aiStatus');if(dot)dot.classList.toggle('off',!hasKey);
+  const noKey=document.getElementById('aiNoKey'),ir=document.getElementById('aiInputRow'),chips=document.querySelector('.ai-chips');
+  if(noKey)noKey.style.display=hasKey?'none':'block';if(ir)ir.style.display=hasKey?'flex':'none';if(chips)chips.style.display=hasKey?'flex':'none';
+}
+function toggleAI(){const panel=document.getElementById('aiPanel');if(panel.classList.contains('hidden'))showAI();else{panel.classList.add('hidden');const b=document.getElementById('bn_ai');if(b)b.classList.remove('active');}}
+function showAI(){const panel=document.getElementById('aiPanel');panel.classList.remove('hidden');updateAIStatus();const b=document.getElementById('bn_ai');if(b)b.classList.add('active');setTimeout(()=>{if(getKey()){const inp=document.getElementById('aiInput');if(inp)inp.focus();}},300);}
+function aiKeydown(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();aiSend();}}
+function aiResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,80)+'px';}
+async function aiAsk(text){showAI();await new Promise(r=>setTimeout(r,150));await aiSend(text);}
+async function aiSend(preset){
+  if(aiLoading)return;const input=document.getElementById('aiInput');const text=preset||(input?input.value.trim():'');if(!text)return;
+  const key=getKey();if(!key){openSettings();return;}
+  if(input){input.value='';aiResize(input);}
+  aiHistory.push({role:'user',content:text});addUserMsg(text);showTyping();aiLoading=true;
+  const btn=document.getElementById('aiSendBtn');if(btn)btn.disabled=true;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,system:buildPrompt(),messages:aiHistory.map(m=>({role:m.role,content:m.content}))})});
+    const data=await resp.json();if(data.error)throw new Error(data.error.message);
+    const reply=data.content.map(b=>b.text||'').join('');aiHistory.push({role:'assistant',content:reply});removeTyping();addBotMsg(reply);saveAI();
+  }catch(err){removeTyping();addBotMsg('⚠️ '+(err.message.includes('401')?'Invalid API key. Check Settings.':'Connection error. Try again.'));}
+  aiLoading=false;if(btn)btn.disabled=false;
+}
+function addUserMsg(t){const el=document.getElementById('aiMsgs');el.innerHTML+='<div class="ai-msg user"><div class="ai-bubble">'+esc(t)+'</div><div class="ai-label">You</div></div>';el.scrollTop=el.scrollHeight;}
+function addBotMsg(t){const el=document.getElementById('aiMsgs');el.innerHTML+='<div class="ai-msg bot"><div class="ai-bubble">'+md2html(t)+'</div><div class="ai-label">Storage AI</div></div>';el.scrollTop=el.scrollHeight;}
+function showTyping(){const el=document.getElementById('aiMsgs');el.innerHTML+='<div class="ai-msg bot" id="typing"><div class="ai-bubble ai-typing"><span></span><span></span><span></span></div></div>';el.scrollTop=el.scrollHeight;}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+function restoreAI(){aiHistory.forEach(m=>{if(m.role==='user')addUserMsg(m.content);else addBotMsg(m.content);});}
+if('serviceWorker' in navigator){
+  const swCode='const C="tt-v1";self.addEventListener("install",e=>e.waitUntil(caches.open(C).then(c=>c.addAll([]))));self.addEventListener("fetch",e=>{if(e.request.url.includes("anthropic.com")||e.request.url.includes("jsdelivr.net"))return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.ok){const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));}return res;}).catch(()=>caches.match(e.request))));});';
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('installBanner');if(b&&!localStorage.getItem('tt_nodismiss'))b.style.display='flex';});
+function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;dismissInstall();});}}
+function dismissInstall(){localStorage.setItem('tt_nodismiss','1');const b=document.getElementById('installBanner');if(b)b.style.display='none';}
+window.addEventListener('appinstalled',()=>dismissInstall());
+loadData();render();restoreAI();updateAIStatus();
+</script>
+</body>
+</html>
